@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Redis;
 
 class Products extends Model
 {
@@ -36,5 +37,10 @@ class Products extends Model
     public function cart(): BelongsToMany
     {
         return $this->belongsToMany(CartItems::class);
+    }
+
+    public function review(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

@@ -13,8 +13,8 @@ export const Purchase = () => {
                         <Link to="cancelled-orders">
                             <li className="block py-2 px-3 text-gray-900 rounded border border-black">Cancelled</li>
                         </Link>
-                        <Link to="to-pay-orders">
-                            <li className="block py-2 px-3 text-gray-900 rounded border border-black">To Pay</li>
+                        <Link to="checkout-items">
+                            <li className="block py-2 px-3 text-gray-900 rounded border border-black">Checkout Items</li>
                         </Link>
                     </ul >
                 </div >

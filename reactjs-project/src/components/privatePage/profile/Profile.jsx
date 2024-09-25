@@ -7,11 +7,10 @@ import logo from '../../../Jumpman_logo.png'
 
 export const Profile = () => {
     const [cookies] = useCookies(["user"]);
-    const { formValues, onChange, accountEdit, getUser, setErrors } = useContext(AccountContext);
-    let { id } = useParams();
-
+    const { formValues, accountEdit, getUser, setErrors } = useContext(AccountContext);
+    // let { id } = useParams();
     useEffect(() => {
-        getUser(id);
+        getUser();
         setErrors({});
     }, [])
     return (
@@ -25,24 +24,34 @@ export const Profile = () => {
                                 <div className="bg-white border border-black shadow rounded-lg p-6">
                                     <div className="flex flex-col items-center">
                                         <img src={logo} alt='Profile' className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0" />
-
                                         {/* <input disabled id="name" name="name" onChange={onChange} value={formValues["account_name"] || ''} type="text" className="text-xl font-bold text-black bg-white text-center" /> */}
                                     </div>
                                     <hr className="my-6 border-t border-gray-300" />
                                     <div className="flex flex-col">
                                         <ul>
-                                            <Link to="purchase">
-                                                <li className="hover:border-black hover:border-b p-2 mb-2 hover:cursor-pointer">
-                                                    My Purchases
-                                                </li>
-                                            </Link>
-                                            <Link to="start-sell">
-                                                <li className="hover:border-black hover:border-b p-2 mb-2 hover:cursor-pointer">
-                                                    Start selling
-                                                </li>
-                                            </Link>
+                                            {
+                                                formValues.isAdmin === 1 ?
+                                                    <>
+                                                        <Link to="start-sell">
+                                                            <li className="hover:border-black hover:border-b p-2 mb-2 hover:cursor-pointer">
+                                                                Start selling
+                                                            </li>
+                                                        </Link>
+
+                                                        <Link to='/admin'>
+                                                            <li className="hover:border-black hover:border-b p-2 mb-2 hover:cursor-pointer">
+                                                                Go to Admin Dashboard
+                                                            </li>
+                                                        </Link>
+                                                    </>
+                                                    :
+                                                    <Link to="purchase">
+                                                        <li className="hover:border-black hover:border-b p-2 mb-2 hover:cursor-pointer">
+                                                            My Purchases
+                                                        </li>
+                                                    </Link>
+                                            }
                                             <Link to={`account/${cookies.user.user}/setting`}>
-                                                {/* <Link to="account"> */}
                                                 <li className="hover:border-black hover:border-b p-2 mb-2 hover:cursor-pointer">
                                                     Account Setting
                                                 </li>

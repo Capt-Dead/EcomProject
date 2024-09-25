@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
             $table->unsignedBigInteger('products_id')->nullable();
-            $table->foreign('products_id')->references('id')->on('products');
+            $table->foreign('products_id')->references('id')->on('products')->onDelete('cascade');;
             $table->string('size');
             $table->integer('quantity');
-            $table->smallInteger('paid')->comment("0-UnPaid, 1-Paid");
+            $table->tinyInteger('payment')->comment("0-Unpaid, 1-Paid");
             $table->timestamps();
         });
     }

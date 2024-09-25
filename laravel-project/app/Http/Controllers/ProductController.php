@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
-use App\Models\CartItems;
 use App\Models\Products;
 use App\Models\ShoeSize;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Tests\Feature\ProductTest;
 
 class ProductController extends Controller
 {
@@ -21,6 +18,26 @@ class ProductController extends Controller
         $response = Products::all();
         return response()->json($response, 200);
     }
+
+    public function highTops()
+    {
+        $response = Products::where('gender', 'High Tops')->get();
+        return response()->json($response, 200);
+    }
+
+    public function midTops()
+    {
+        $response = Products::where('gender', 'Mid Tops')->get();
+        return response()->json($response, 200);
+    }
+
+    public function lowTops()
+    {
+        $response = Products::where('gender', 'Low Tops')->get();
+        return response()->json($response, 200);
+    }
+
+
 
     public function store(ProductRequest $request)
     {
@@ -120,12 +137,12 @@ class ProductController extends Controller
             $products->price           = $request->input('price');
 
             $products->shoeSize->update([
-                'size1' => $request->input('size1'),
-                'size2' => $request->input('size2'),
-                'size3' => $request->input('size3'),
-                'size4' => $request->input('size4'),
-                'size5' => $request->input('size5'),
-                'size6' => $request->input('size6'),
+                'size_1' => $request->input('size1'),
+                'size_2' => $request->input('size2'),
+                'size_3' => $request->input('size3'),
+                'size_4' => $request->input('size4'),
+                'size_5' => $request->input('size5'),
+                'size_6' => $request->input('size6'),
             ]);
 
             if ($request->image) {

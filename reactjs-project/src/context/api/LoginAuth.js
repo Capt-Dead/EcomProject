@@ -18,10 +18,18 @@ export const LoginAuthProvider = ({ children }) => {
     try {
       const user = await axios.post("login", data);
       setCookie("user", user?.data);
-      navigate({ replace: true, state: { loginSuccess: true } });
-      toast.success("Welcome to our Shop!", {
-        position: "bottom-left",
-      });
+
+      if (user?.data?.adminUrl) {
+        window.location.replace(user?.data?.adminUrl);
+        toast.success("Welcome", {
+          position: "bottom-left",
+        });
+      } else {
+        navigate({ replace: true, state: { loginSuccess: true } });
+        toast.success("Welcome to our Shop!", {
+          position: "bottom-left",
+        });
+      }
     } catch (e) {
       if (e.response?.status === 422) {
         setErrors(e.response.data.errors);

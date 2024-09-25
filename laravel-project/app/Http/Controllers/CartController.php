@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CartRequest;
 use App\Models\CartItems;
+use App\Models\OrderDetails;
 use App\Models\Products;
+use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -14,21 +16,23 @@ class CartController extends Controller
     {
         try {
             DB::beginTransaction();
-            $product = Products::find($request->input("products_id"));
-            $product->update([
-                'stock_inventory' => $request->input("newQuantity"),
-
-            ]); // Bawas ng quantity 
             $cart = new CartItems();
-            $cart->products_id = $request->input("products_id");
             $cart->user_id     = $request->input("user_id");
+            $cart->products_id = $request->input("products_id");
             $cart->size        = $request->input("size");
             $cart->quantity    = $request->input("quantity");
+            $cart->payment     = $request->input("payment");
 
             $cart->save();
             $cart->product()->attach($cart->products_id);
+
+            $cart    = CartItems::where('user_id', $request->input("user_id"))->where('payment', 0)->count();
+
             DB::commit();
-            return response()->json("Success", 201);
+            return response()->json([
+                'message' => "Success",
+                'cart'    => $cart
+            ], 201);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json($e);
@@ -38,11 +42,36 @@ class CartController extends Controller
         ], 401);
     }
 
-    public function show($id)
+    public function showUnpaid($id)
     {
-        $cart = CartItems::where('user_id', $id)->get();
-        $data = $cart->load('product');
+        $cart = CartItems::where('user_id', $id)->where('payment', 0)->get();
+        $cart->load('product');
+
+        $cartCount = CartItems::where('user_id', $id)->where('payment', 0)->count();
+
+        return response()->json([
+            'cart'      => $cart,
+            'cartCount' => $cartCount,
+        ], 201);
+    }
+
+    public function showPaid($id)
+    {
+        $cart = CartItems::where('user_id', $id)->where('payment', 1)->get();
+        $cart->load('product');
+        $cart->load('orderDetails');
+
         return response()->json($cart, 201);
+    }
+
+    public function cancel($id)
+    {
+        $cancel = 3;
+        $order = OrderDetails::find($id);
+        $order->status = $cancel;
+        $order->save();
+
+        return response()->json('Your order is cancelled', 202);
     }
 
     public function destroy($id)

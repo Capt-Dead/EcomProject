@@ -9,6 +9,7 @@ import {
   AccountProvider,
   ProductProvider,
   CartProvider,
+  AdminProdvider,
 } from "./context";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
@@ -21,19 +22,21 @@ root.render(
         <Route
           path="/*"
           element={
-            <CookiesProvider>
-              <RegisterAuthProvider>
-                <LoginAuthProvider>
-                  <AccountProvider>
-                    <ProductProvider>
-                      <CartProvider>
-                        <App />
-                      </CartProvider>
-                    </ProductProvider>
-                  </AccountProvider>
-                </LoginAuthProvider>
-              </RegisterAuthProvider>
-            </CookiesProvider>
+            <AdminProdvider>
+              <CookiesProvider>
+                <RegisterAuthProvider>
+                  <LoginAuthProvider>
+                    <AccountProvider>
+                      <ProductProvider>
+                        <CartProvider>
+                          <App />
+                        </CartProvider>
+                      </ProductProvider>
+                    </AccountProvider>
+                  </LoginAuthProvider>
+                </RegisterAuthProvider>
+              </CookiesProvider>
+            </AdminProdvider>
           }
         />
       </Routes>

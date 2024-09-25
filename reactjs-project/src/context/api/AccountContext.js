@@ -28,7 +28,7 @@ export const AccountProvider = ({ children }) => {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const getUser = async (id) => {
+  const getUser = async () => {
     try {
       const response = await axios.get("user/" + cookies.user.user, {
         headers: {
@@ -39,6 +39,7 @@ export const AccountProvider = ({ children }) => {
       setFormValues({
         name: Account.name,
         email: Account.email,
+        isAdmin: Account.isAdmin,
         address: Account.address.address,
         city: Account.address.city,
         postal: Account.address.postal_code,

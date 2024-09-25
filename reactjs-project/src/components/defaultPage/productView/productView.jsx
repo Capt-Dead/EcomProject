@@ -25,7 +25,7 @@ export const ProductView = () => {
                                     <div className='flex items-center'>
                                         <div className="relative m-5 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
                                             <Link className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" to={`/product/${allProducts.id}`}>
-                                                <img className="object-cover" src={`http://laravel-project.test:8080/storage/${allProducts.image}`} alt='${allProducts.image}' />
+                                                <img className="object-cover" src={`http://laravel-project.test:8080/storage/${allProducts.image}`} alt='Product_Image' />
                                             </Link>
                                             <div className="mt-4 px-5 pb-5">
                                                 <Link to={`/product/${allProducts.id}`}>

@@ -6,4 +6,4 @@ const NoAuth = () => {
     return cookies?.user?.token ? <Navigate to='/home' replace /> : <Outlet />;
 }
 
-export default NoAuth
+export default NoAuth;

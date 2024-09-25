@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { Header, Footer } from '../../index'
 import { useState, useEffect, useContext } from 'react';
-import { useParams } from "react-router-dom";
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import CartContext from "../../../context/api/CartContext"
+import AccountContext from "../../../context/api/AccountContext"
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -14,13 +14,11 @@ import { TextField, FormControlLabel, RadioGroup, Radio, FormHelperText } from "
 
 export const Cart = () => {
     const { cart, getCart, payment, deleteCart, setErrors } = useContext(CartContext);
+    const { formValues } = useContext(AccountContext);
     const [open, setOpen] = useState(false);
     const [deliveryFee, setDeliveryFee] = useState(0);
-    let { id } = useParams();
     let totalPrice = 0;
     let totalAmount = 0;
-    let totalVAT = .12;
-    let total = 0;
 
     const ProductSchema = yup.object({
         address: yup.string().required("Address is required"),
@@ -53,7 +51,7 @@ export const Cart = () => {
     };
 
     useEffect(() => {
-        getCart(id)
+        getCart()
         setErrors({});
     }, [])
 
@@ -70,7 +68,7 @@ export const Cart = () => {
                                 {
                                     cart.map((cart) => {
                                         totalPrice = cart.product[0].price * cart.quantity
-                                        total += totalPrice
+                                        totalAmount += totalPrice
                                         return (
                                             < div key={cart.id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6" >
                                                 <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
@@ -120,19 +118,13 @@ export const Cart = () => {
                                     <div className="space-y-2">
                                         <dl className="flex items-center justify-between gap-4">
                                             <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Original price</dt>
-                                            <dd className="text-base font-medium text-gray-900 dark:text-white">$ {total}</dd>
-                                        </dl>
-
-                                        <dl className="flex items-center justify-between gap-4">
-                                            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">VAT</dt>
-                                            <dd className="text-base font-medium text-gray-900 dark:text-white">$ {totalAmount = total * totalVAT}</dd>
+                                            <dd className="text-base font-medium text-gray-900 dark:text-white">$ {totalAmount}</dd>
                                         </dl>
                                     </div>
 
                                     <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
                                         <dt className="text-base font-bold text-gray-900 dark:text-white">Total</dt>
-                                        <dd className="text-base font-bold text-gray-900 dark:text-white">$ {total = totalAmount + total}</dd>
-
+                                        <dd className="text-base font-bold text-gray-900 dark:text-white">$ {totalAmount}</dd>
                                     </dl>
                                 </div>
 
@@ -151,7 +143,9 @@ export const Cart = () => {
                                             <div className="lg:flex lg:items-start lg:gap-12 xl:gap-16">
                                                 <div className="min-w-0 flex-1 space-y-8">
                                                     <div className="space-y-4">
-                                                        <h2 className="text-xl font-semibold text-gray-900">Delivery Details</h2>
+                                                        {/* <div className="flex"> */}
+                                                        <h2 className="text-xl font-semibold text-gray-900 mr-4">Confirm Delivery Details</h2>
+                                                        {/* </div> */}
 
                                                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
@@ -163,8 +157,8 @@ export const Cart = () => {
                                                                     render={({ field, fieldState: { error } }) => (
                                                                         <TextField
                                                                             {...field}
-                                                                            placeholder="Address"
                                                                             fullWidth
+                                                                            placeholder={formValues.address}
                                                                             value={field.value}
                                                                             error={!!error}
                                                                             helperText={error?.message}
@@ -181,7 +175,7 @@ export const Cart = () => {
                                                                     render={({ field, fieldState: { error } }) => (
                                                                         <TextField
                                                                             {...field}
-                                                                            placeholder="City"
+                                                                            placeholder={formValues.city}
                                                                             fullWidth
                                                                             value={field.value}
                                                                             error={!!error}
@@ -199,7 +193,7 @@ export const Cart = () => {
                                                                     render={({ field, fieldState: { error } }) => (
                                                                         <TextField
                                                                             {...field}
-                                                                            placeholder="Postal Code"
+                                                                            placeholder={formValues.postal}
                                                                             fullWidth
                                                                             value={field.value}
                                                                             error={!!error}
@@ -217,7 +211,7 @@ export const Cart = () => {
                                                                     render={({ field, fieldState: { error } }) => (
                                                                         <TextField
                                                                             {...field}
-                                                                            placeholder="Country"
+                                                                            placeholder={formValues.country}
                                                                             fullWidth
                                                                             value={field.value}
                                                                             error={!!error}
@@ -235,7 +229,7 @@ export const Cart = () => {
                                                                     render={({ field, fieldState: { error } }) => (
                                                                         <TextField
                                                                             {...field}
-                                                                            placeholder='+639 PH Mobile No.'
+                                                                            placeholder={formValues.mobile}
                                                                             fullWidth
                                                                             value={field.value}
                                                                             error={!!error}
@@ -244,8 +238,8 @@ export const Cart = () => {
                                                                     )}
                                                                 />
                                                             </div>
-
                                                         </div>
+                                                        {/* <h2 onClick={getUser} className="text-sm justify-end font-semibold text-gray-900  hover:cursor-pointer hover:undeline">Autofill Details?</h2> */}
                                                     </div>
 
                                                     <div className="space-y-4">
@@ -278,11 +272,11 @@ export const Cart = () => {
                                                                             <div className="flex items-start">
 
                                                                                 <div className="flex h-5 items-center">
-                                                                                    <FormControlLabel value="1" onChange={() => setDeliveryFee(15)} control={<Radio />} />
+                                                                                    <FormControlLabel value="1" onChange={() => setDeliveryFee(1)} control={<Radio />} />
                                                                                 </div>
                                                                                 <div className="ms-4 text-sm">
-                                                                                    <span className="font-medium leading-none text-gray-900 "> Premium Payment on delivery </span>
-                                                                                    <p id="pay-on-delivery-text" className="mt-1 text-xs font-normal text-gray-500 ">+$15 payment processing fee</p>
+                                                                                    <span className="font-medium leading-none text-gray-900 "> Payment on delivery </span>
+                                                                                    <p id="pay-on-delivery-text" className="mt-1 text-xs font-normal text-gray-500 ">COD process payment</p>
                                                                                 </div>
 
                                                                             </div>
@@ -293,7 +287,6 @@ export const Cart = () => {
                                                             )}
                                                         />
 
-
                                                     </div>
 
                                                     <div className="space-y-4">
@@ -302,17 +295,12 @@ export const Cart = () => {
 
                                                             <dl className="flex items-center justify-between gap-4 py-3">
                                                                 <dt className="text-base font-normal text-gray-500 ">Products:</dt>
-                                                                <dd className="text-base font-medium text-gray-900 ">$ {total}</dd>
-                                                            </dl>
-
-                                                            <dl className="flex items-center justify-between gap-4 py-3">
-                                                                <dt className="text-base font-normal text-gray-500 ">Delivery option:</dt>
-                                                                <dd className="text-base font-medium text-gray-900 ">$ {deliveryFee}</dd>
+                                                                <dd className="text-base font-medium text-gray-900 ">$ {totalAmount}</dd>
                                                             </dl>
 
                                                             <dl className="flex items-center justify-between gap-4 py-3">
                                                                 <dt className="text-base font-bold text-gray-900 ">Total:</dt>
-                                                                <dd className="text-base font-bold text-gray-900 ">$ {total = total + deliveryFee}</dd>
+                                                                <dd className="text-base font-bold text-gray-900 ">$ {totalAmount}</dd>
                                                             </dl>
 
                                                         </div>

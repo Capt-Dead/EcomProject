@@ -15,6 +15,7 @@ class LoginController extends Controller
 {
     public function login(LoginRequest $request)
     {
+        $adminUrl = "";
         try {
             $email    = $request->email;
             $password = $request->password;
@@ -23,10 +24,15 @@ class LoginController extends Controller
                 $user  = Auth::user();
                 $token = $request->user()->createToken('user')->plainTextToken;
 
+                if ($user->isAdmin === 1) {
+                    $adminUrl = 'http://localhost:3000/admin';
+                }
+
                 // $token = $request->user()->createToken('token', expiresAt: now()->addDay());
                 return response()->json([
-                    'user'  => $user->id,
-                    'token' => $token,
+                    'adminUrl' => $adminUrl,
+                    'user'     => $user->id,
+                    'token'    => $token,
                 ], 202);
             }
         } catch (Exception $e) {
@@ -39,12 +45,14 @@ class LoginController extends Controller
 
     public function register(UserRequest $request)
     {
+        $isAdmin = 0;
         try {
             DB::beginTransaction();
             $user                 = new User();
             $user->name           = $request->input('name');
             $user->email          = $request->input('email');
             $user->password       = bcrypt($request->input('password'));
+            $user->isAdmin        = $isAdmin;
             $user->save();
 
             $address              = new UserAddress();
@@ -66,8 +74,9 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         try {
-            // Auth::logout();
-            $request->user()->currentAccessToken()->delete();
+            $user = $request->user();
+            $user->currentAccessToken()->delete();
+            return response()->json("", 204);
         } catch (Exception $e) {
             return $e;
         }

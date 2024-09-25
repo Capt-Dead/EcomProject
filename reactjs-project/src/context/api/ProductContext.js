@@ -32,6 +32,9 @@ export const ProductProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [products, setProducts] = useState([]);
+  const [cartCount, setCartCount] = useState(0);
+  const [reviewProduct, setReviewProduct] = useState(0);
+  const [review, setReview] = useState([]);
   const [cookies] = useCookies(["user"]);
   const navigate = useNavigate();
 
@@ -46,8 +49,40 @@ export const ProductProvider = ({ children }) => {
       setAllProducts(all.data);
     } catch (e) {
       if (e.all.status === 500) {
-        console.log(e);
-        setErrors(e);
+        return e?.response?.data?.message;
+      }
+    }
+  };
+
+  const getHighTops = async () => {
+    try {
+      const all = await axios.get("product-hightops");
+      setAllProducts(all.data);
+    } catch (e) {
+      if (e.all.status === 500) {
+        return e?.response?.data?.message;
+      }
+    }
+  };
+
+  const getMidTops = async () => {
+    try {
+      const all = await axios.get("product-midtops");
+      setAllProducts(all.data);
+    } catch (e) {
+      if (e.all.status === 500) {
+        return e?.response?.data?.message;
+      }
+    }
+  };
+
+  const getLowTops = async () => {
+    try {
+      const all = await axios.get("product-lowtops");
+      setAllProducts(all.data);
+    } catch (e) {
+      if (e.all.status === 500) {
+        return e?.response?.data?.message;
       }
     }
   };
@@ -62,8 +97,35 @@ export const ProductProvider = ({ children }) => {
       setProducts(all.data);
     } catch (e) {
       if (e.all.status === 500) {
-        console.log(e);
-        setErrors(e);
+        return e?.response?.data?.message;
+      }
+    }
+  };
+
+  const newReview = async (data) => {
+  try {
+      const formData = new FormData();
+      formData.append("user_id", cookies.user.user);
+      formData.append("products_id", reviewProduct);
+      formData.append("comment", data.comment);
+      const response = await axios.post("new-review", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${cookies.user.token}`,
+        },
+      });
+      if (response) {
+        toast.success("Success, review is added!", {
+          position: "bottom-left",
+        });
+      }
+    } catch (e) {
+      if (e.response.status === 422) {
+        console.log(e.response.data.errors);
+        setErrors(e.response.data.errors);
+        toast.error("Something Went Wrong", {
+          position: "bottom-left",
+        });
       }
     }
   };
@@ -75,8 +137,15 @@ export const ProductProvider = ({ children }) => {
           Authorization: `Bearer ${cookies.user.token}`,
         },
       });
+
+      const all = await axios.get("review/" + id, {
+        headers: {
+          Authorization: `Bearer ${cookies.user.token}`,
+        },
+      });
+      setReview(all.data);
+
       const data = response.data;
-      // setProductEdit(data);
       setFormValues({
         id: data.id,
         name: data.name,
@@ -94,8 +163,7 @@ export const ProductProvider = ({ children }) => {
       });
     } catch (error) {
       if (error.all.status === 500) {
-        console.log(error.all);
-        setErrors(error);
+        return error?.response?.data?.message;
       }
     }
   };
@@ -167,7 +235,7 @@ export const ProductProvider = ({ children }) => {
       formData.append("size4", size4);
       formData.append("size5", size5);
       formData.append("size6", size6);
-      const response = await axios.post("product/" + productEdit.id, formData, {
+      const response = await axios.post("product/" + formValues.id, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${cookies.user.token}`,
@@ -199,6 +267,20 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  const getCart = async () => {
+    try {
+      const response = await axios.get("cart/" + cookies.user.user, {
+        headers: {
+          Authorization: `Bearer ${cookies.user.token}`,
+        },
+      });
+      const data = response.data.cartCount;
+      setCartCount(data);
+    } catch (error) {
+      return error?.response?.data?.message;
+    }
+  };
+
   const addCart = async (data) => {
     try {
       const newQuantity = formValues.stock_inventory - data.quantity;
@@ -207,19 +289,25 @@ export const ProductProvider = ({ children }) => {
       formData.append("products_id", formValues.id);
       formData.append("quantity", data.quantity);
       formData.append("size", data.size);
+      formData.append("payment", 0);
       formData.append("newQuantity", newQuantity);
+      formData.append("address", data.address);
+      formData.append("city", data.city);
+      formData.append("postalcode", data.postal);
+      formData.append("country", data.country);
+      formData.append("mobile", data.mobile);
       const response = await axios.post("cart", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${cookies.user.token}`,
         },
       });
-      getEditProducts(formValues.id);
       if (response) {
         toast.success("Successfully added to cart", {
           position: "bottom-left",
         });
       }
+      getCart();
     } catch (e) {
       if (e.response?.status === 422) {
         setErrors(e.response.data.errors);
@@ -237,8 +325,13 @@ export const ProductProvider = ({ children }) => {
         products,
         setProducts,
         getProducts,
+        getHighTops,
+        getMidTops,
+        getLowTops,
         getSpecificUser,
         getEditProducts,
+        getCart,
+        cartCount,
         productEdit,
         addProducts,
         updateProducts,
@@ -262,6 +355,9 @@ export const ProductProvider = ({ children }) => {
         setSize5,
         size6,
         setSize6,
+        review,
+        newReview,
+        setReviewProduct,
       }}
     >
       {children}

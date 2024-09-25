@@ -15,7 +15,6 @@ export const AddProduct = () => {
         size: yup.string().required("Size is required"),
         price: yup.number().typeError("Invalid").min(1, "Invalid"),
         stock: yup.number().typeError("Invalid").min(1, "Invalid"),
-        // image: yup.mixed().required("Required"),
     })
 
     const defaultValues = {
@@ -25,12 +24,10 @@ export const AddProduct = () => {
         size: '',
         price: '',
         stock: '',
-        // image: '',
     }
 
     const { control, handleSubmit, formState: { error },
     } = useForm({ resolver: yupResolver(ProductSchema), defaultValues: defaultValues });
-
 
     useEffect(() => {
         setErrors({});
@@ -41,7 +38,7 @@ export const AddProduct = () => {
             <form onSubmit={handleSubmit(addProducts)}>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 mt-4">
                     <div>
-                        <label className="text-black" htmlFor="name">Product Name:</label>
+                        <label className="text-black" htmlFor="product_name">Product Name:</label>
                         <Controller
                             name={'name'}
                             control={control}
@@ -81,7 +78,7 @@ export const AddProduct = () => {
                     </div>
 
                     <div>
-                        <p className="text-black" htmlFor="descs">Category:</p>
+                        <p className="text-black" htmlFor="category">Category:</p>
                         <Controller
                             name={'category'}
                             control={control}
@@ -91,9 +88,9 @@ export const AddProduct = () => {
                                     {...field}
                                     value={field.value}
                                 >
-                                    <FormControlLabel value="Men" control={<Radio />} label="Men" />
-                                    <FormControlLabel value="Women" control={<Radio />} label="Women" />
-                                    <FormControlLabel value="Kids" control={<Radio />} label="Kids" />
+                                    <FormControlLabel value="High Tops" control={<Radio />} label="High Tops" />
+                                    <FormControlLabel value="Mid Tops" control={<Radio />} label="Mid Tops" />
+                                    <FormControlLabel value="Low Tops" control={<Radio />} label="Low Tops" />
                                     <FormHelperText sx={{ color: 'danger' }}>{!!error ? error?.message : error?.message}</FormHelperText>
                                 </RadioGroup>
                             )}
@@ -104,7 +101,7 @@ export const AddProduct = () => {
                     </div>
 
                     <div>
-                        <p className="text-black" htmlFor="descs">Size Available:</p>
+                        <p className="text-black" htmlFor="size">Size Available:</p>
                         <Controller
                             name={'size'}
                             control={control}
@@ -116,12 +113,12 @@ export const AddProduct = () => {
                                         {...field}
                                         value={field.value}
                                     >
-                                        <FormControlLabel value="1" onChange={(e) => setSize1(e.target.value)} control={<Checkbox />} label="9" />
-                                        <FormControlLabel value="1" onChange={(e) => setSize2(e.target.value)} control={<Checkbox />} label="9.5" />
-                                        <FormControlLabel value="1" onChange={(e) => setSize3(e.target.value)} control={<Checkbox />} label="10" />
-                                        <FormControlLabel value="1" onChange={(e) => setSize4(e.target.value)} control={<Checkbox />} label="10.5" />
-                                        <FormControlLabel value="1" onChange={(e) => setSize5(e.target.value)} control={<Checkbox />} label="11" />
-                                        <FormControlLabel value="1" onChange={(e) => setSize6(e.target.value)} control={<Checkbox />} label="12" />
+                                        <FormControlLabel value="1" onChange={(e) => setSize1(e.target.value)} control={<Checkbox id="size1" />} label="9" />
+                                        <FormControlLabel value="1" onChange={(e) => setSize2(e.target.value)} control={<Checkbox id="size2" />} label="9.5" />
+                                        <FormControlLabel value="1" onChange={(e) => setSize3(e.target.value)} control={<Checkbox id="size3" />} label="10" />
+                                        <FormControlLabel value="1" onChange={(e) => setSize4(e.target.value)} control={<Checkbox id="size4" />} label="10.5" />
+                                        <FormControlLabel value="1" onChange={(e) => setSize5(e.target.value)} control={<Checkbox id="size5" />} label="11" />
+                                        <FormControlLabel value="1" onChange={(e) => setSize6(e.target.value)} control={<Checkbox id="size6" />} label="12" />
                                     </FormGroup>
                                     <FormHelperText >{!!error ? error?.message : error?.message}</FormHelperText>
                                 </>
@@ -133,7 +130,7 @@ export const AddProduct = () => {
 
 
                     <div>
-                        <label className="text-black" htmlFor="price">Price:</label>
+                        <label className="text-black" htmlFor="product_price">Price:</label>
                         <Controller
                             name={'price'}
                             control={control}
@@ -153,7 +150,7 @@ export const AddProduct = () => {
                     </div>
 
                     <div>
-                        <label className="text-black" htmlFor="stock_inventory">Stock:</label>
+                        <label className="text-black" htmlFor="product_stock">Stock:</label>
                         <Controller
                             name={'stock'}
                             control={control}
@@ -165,7 +162,6 @@ export const AddProduct = () => {
                                     error={!!error}
                                     helperText={error?.message}
                                 />
-
                             )}
                         />
                         {errors.stock_inventory && (

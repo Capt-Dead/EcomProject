@@ -16,6 +16,11 @@ export const StartSelling = () => {
                             View Products
                         </p>
                     </Link>
+                    {/* <Link to="view-orders">
+                        <p className="mt-5 border-4 border-black p-12 px-20 rounded-lg text-2xl">
+                            View Orders
+                        </p>
+                    </Link> */}
                 </div>
             </div>
         </>

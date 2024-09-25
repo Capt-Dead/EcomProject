@@ -12,7 +12,11 @@ class ShoeSize extends Model
 
     protected $fillable = [
         'size_1',
-
+        'size_2',
+        'size_3',
+        'size_4',
+        'size_5',
+        'size_6',
     ];
 
     public function product(): BelongsTo

@@ -87,7 +87,7 @@ export const Product = () => {
                                         <span className="text-gray-600">{formValues.stock_inventory}</span>
                                     </div>
                                     <div>
-                                        <span className="font-bold text-gray-700">For: </span>
+                                        <span className="font-bold text-gray-700">Category: </span>
                                         <span className="text-gray-600">{formValues.gender}</span>
                                     </div>
                                 </div>
@@ -136,7 +136,7 @@ export const Product = () => {
                                                 </div>
                                             </div>
                                             <div className='mb-4'>
-                                                <span className="font-bold text-gray-700">Select Size:</span>
+                                                <span className="font-bold text-gray-700">Quantity:</span>
                                                 <div className="flex items-center mt-2">
                                                     <Controller
                                                         name={'quantity'}

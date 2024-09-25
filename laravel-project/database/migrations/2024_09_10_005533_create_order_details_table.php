@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
+            $table->unsignedBigInteger('cart_items_id')->nullable();
+            $table->foreign('cart_items_id')->references('id')->on('cart_items')->onDelete('cascade');;
             $table->float('total');
-            $table->integer('payment_id');
-            $table->integer('quantity');
+            $table->integer('payment_details')->comment("0-COD, 1-Credit Card");
+            $table->tinyInteger('status')->comment("0- On the way, 1-Done, 2-Pending, 3-Cancel");
             $table->timestamps();
         });
     }

@@ -34,17 +34,17 @@ export const EditProduct = () => {
                     <div>
                         <p className="text-black" htmlFor="descs">Category</p>
                         <div className="flex items-center mb-2 mt-2">
-                            <input id="Men" type="radio" value="Men" onChange={(e) => setCategory(e.target.value)} name="category" className="w-4 h-4 text-black bg-gray-100 border-gray-300" />
-                            <label htmlFor="Men" className="ms-2 text-sm font-medium text-black">Men</label>
+                            <input id="Men" type="radio" value="High Tops" onChange={(e) => setCategory(e.target.value)} name="category" className="w-4 h-4 text-black bg-gray-100 border-gray-300" />
+                            <label htmlFor="Men" className="ms-2 text-sm font-medium text-black">High Tops</label>
 
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="Women" type="radio" value="Women" onChange={(e) => setCategory(e.target.value)} name="category" className="w-4 h-4 text-black bg-gray-100 border-gray-300" />
-                            <label htmlFor="Women" className="ms-2 text-sm font-medium text-black">Women</label>
+                            <input id="Women" type="radio" value="Mid Tops" onChange={(e) => setCategory(e.target.value)} name="category" className="w-4 h-4 text-black bg-gray-100 border-gray-300" />
+                            <label htmlFor="Women" className="ms-2 text-sm font-medium text-black">Mid Tops</label>
                         </div>
                         <div className="flex items-center">
-                            <input id="Kids" type="radio" value="Kids" onChange={(e) => setCategory(e.target.value)} name="category" className="w-4 h-4 text-black bg-gray-100 border-gray-300" />
-                            <label htmlFor="Kids" className="ms-2 text-sm font-medium text-black">Kids</label>
+                            <input id="Kids" type="radio" value="Low Tops" onChange={(e) => setCategory(e.target.value)} name="category" className="w-4 h-4 text-black bg-gray-100 border-gray-300" />
+                            <label htmlFor="Kids" className="ms-2 text-sm font-medium text-black">Low Tops</label>
                         </div>
                     </div>
 
