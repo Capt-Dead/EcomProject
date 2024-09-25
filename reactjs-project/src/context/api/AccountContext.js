@@ -18,8 +18,6 @@ const initialForm = {
 
 export const AccountProvider = ({ children }) => {
   const [formValues, setFormValues] = useState(initialForm);
-  const [accountEdit, setAccountEdit] = useState([]);
-  const [accountEdits, setAccountEdits] = useState([]);
   const [errors, setErrors] = useState([]);
   const [cookies] = useCookies(["user"]);
 
@@ -37,6 +35,7 @@ export const AccountProvider = ({ children }) => {
       });
       const Account = response.data;
       setFormValues({
+        id: Account.id,
         name: Account.name,
         email: Account.email,
         isAdmin: Account.isAdmin,
@@ -68,10 +67,6 @@ export const AccountProvider = ({ children }) => {
         },
       });
     } catch (e) {
-      if (e.response.status === 200) {
-        console.log(e.response.data);
-        // setErrors();
-      }
       if (e.response.status === 422) {
         setErrors(e.response.data.errors);
       }
@@ -88,16 +83,12 @@ export const AccountProvider = ({ children }) => {
   return (
     <AccountContext.Provider
       value={{
-        accountEdit,
-        accountEdits,
         getUser,
-        // getAccounts,
         updateUser,
         onChange,
         formValues,
         setErrors,
         errors,
-        // updateSkill,
         // deleteSkill,
       }}
     >

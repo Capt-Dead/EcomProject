@@ -28,7 +28,6 @@ class LoginController extends Controller
                     $adminUrl = 'http://localhost:3000/admin';
                 }
 
-                // $token = $request->user()->createToken('token', expiresAt: now()->addDay());
                 return response()->json([
                     'adminUrl' => $adminUrl,
                     'user'     => $user->id,

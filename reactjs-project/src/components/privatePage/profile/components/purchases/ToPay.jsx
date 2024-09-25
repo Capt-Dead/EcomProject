@@ -32,11 +32,11 @@ export const ToPay = () => {
                                                     <div className="mt-2 mb-5 flex items-center justify-between">
                                                         <p>
                                                             <span className="text-xl font-bold text-slate-900">${cart.product[0].price} |  Qty: {cart.quantity} <br /> </span>
-                                                            <span className="text-xl font-bold text-slate-900">Payment: {cart.order_details.payment_details === 0 ? "Card" : "COD"}</span>
+                                                            <span className="text-xl font-bold text-slate-900">Payment: {cart.order_details.payment_details === 0 ? "COD" : "Card"}</span>
                                                         </p>
                                                     </div>
                                                     <div className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                                                        Status: {cart.order_details.status === 2 ? 'Pending' : cart.order_details.status === 1 ? 'Done' : cart.order_details.status === 0 ? "On the way" : ""}
+                                                        Status: {cart.order_details.status === 2 ? 'Pending' : cart.order_details.status === 1 ? 'Done' : cart.order_details.status === 0 ? "On Delivery" : ""}
                                                     </div>
                                                     <button onClick={() => cancelOrder(cart.order_details.id)} type="button" className="py-2 px-3 w-full text-gray-900 rounded border border-black text-center mt-4">Cancel Order?</button>
                                                 </div>

@@ -66,18 +66,17 @@ class PaymentController extends Controller
                     'quantity' => $quantity
                 ];
             };
+            DB::beginTransaction();
+            $user = User::find($id);
+            $user->address->update([
+                'address'     => $request->input('address'),
+                'city'        => $request->input('city'),
+                'postal_code' => $request->input('postalcode'),
+                'country'     => $request->input('country'),
+                'mobile_no'   => $request->input('mobile'),
+            ]);
+            DB::commit();
         };
-
-        DB::beginTransaction();
-        $user = User::find($id);
-        $user->address->update([
-            'address'     => $request->input('address'),
-            'city'        => $request->input('city'),
-            'postal_code' => $request->input('postalcode'),
-            'country'     => $request->input('country'),
-            'mobile_no'   => $request->input('mobile'),
-        ]);
-        DB::commit();
 
         Stripe::setApiKey(config('stripe.secret_key'));
         $session = Session::create([

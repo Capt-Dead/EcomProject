@@ -24,9 +24,9 @@ export const CartProvider = ({ children }) => {
       });
       const data = response.data.cart;
       setCart(data);
-    } catch (error) {
-      if (error.all.status === 500) {
-        setErrors(error);
+    } catch (e) {
+      if (e.all.status === 500) {
+        return e?.response?.data?.message;
       }
     }
   };
@@ -40,9 +40,9 @@ export const CartProvider = ({ children }) => {
       });
       const data = response.data;
       setCart(data);
-    } catch (error) {
-      if (error.all.status === 500) {
-        setErrors(error);
+    } catch (e) {
+      if (e.all.status === 500) {
+        return e?.response?.data?.message;
       }
     }
   };
@@ -54,14 +54,14 @@ export const CartProvider = ({ children }) => {
           Authorization: `Bearer ${cookies.user.token}`,
         },
       });
-      if (response && data.options === "1") {
+      if (response && data.options === "0") {
         navigate("/");
         getCartPaid();
         toast.success("Checkout Successfully", {
           position: "bottom-left",
         });
       }
-      if (response && data.options === "0") {
+      if (response && data.options === "1") {
         toast.loading("Payment is processing", {
           position: "bottom-left",
         });
@@ -91,23 +91,26 @@ export const CartProvider = ({ children }) => {
     toast.warn("Product is remove from the cart", {
       position: "bottom-left",
     });
-    getCart();
   };
 
   const cancelOrder = async (id) => {
     try {
-      await axios.put("order/" + id + "/cancel", {
+      const formData = new FormData();
+      formData.append("_method", "PUT");
+      const cancel = await axios.post("order/" + id + "/cancel", formData, {
         headers: {
           Authorization: `Bearer ${cookies.user.token}`,
         },
       });
-      toast.warn("You cancelled your order", {
-        position: "bottom-left",
-      });
-      getCartPaid();
+      if (cancel) {
+        toast.warn("You cancelled your order", {
+          position: "bottom-left",
+        });
+        getCartPaid();
+      }
     } catch (e) {
       if (e.all.status === 500) {
-        setErrors(e);
+        return e?.response?.data?.message;
       }
     }
   };

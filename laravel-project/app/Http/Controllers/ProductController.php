@@ -45,7 +45,6 @@ class ProductController extends Controller
             DB::beginTransaction();
             $imageName                 = Str::random(32) . "." . $request->image->getClientOriginalExtension();
             $products                  = new Products();
-
             $products->name            = $request->input('name');
             $products->user_id         = $request->input('user_id');
             $products->image           = $imageName;
@@ -66,15 +65,12 @@ class ProductController extends Controller
             $products->shoeSize()->save($shoeSize);
 
             Storage::disk('public')->put($imageName, file_get_contents($request->image));
-
             DB::commit();
-            return response()->json($shoeSize . $products, 201);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'message' => 'Something went wrong' . $e,
-            ], 500);
+            throw $e;
         }
+        return response()->json($products, 201);
     }
 
     public function show($id)

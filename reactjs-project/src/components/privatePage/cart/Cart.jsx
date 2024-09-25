@@ -90,7 +90,7 @@ export const Cart = () => {
                                                     <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                                                         <Link to={`/product/${cart.product[0].id}`} className="text-base font-medium text-gray-900 hover:underline dark:text-white">{cart.product[0].name}</Link>
                                                         <br />
-                                                        <Link to={`/product/${cart.product[0].id}`} className="text-xs font-medium text-gray-900 hover:underline dark:text-white">{cart.product[0].descs}</Link>
+                                                        <Link to={`/product/${cart.product[0].id}`} className="text-xs font-medium text-gray-900 hover:underline dark:text-white">{cart.product[0].name}</Link>
 
                                                         <div className="flex items-center gap-4">
                                                             <button onClick={() => deleteCart(cart.id)} type="button" className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
@@ -239,7 +239,6 @@ export const Cart = () => {
                                                                 />
                                                             </div>
                                                         </div>
-                                                        {/* <h2 onClick={getUser} className="text-sm justify-end font-semibold text-gray-900  hover:cursor-pointer hover:undeline">Autofill Details?</h2> */}
                                                     </div>
 
                                                     <div className="space-y-4">
@@ -258,13 +257,12 @@ export const Cart = () => {
                                                                         <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 ">
                                                                             <div className="flex items-start">
                                                                                 <div className="flex h-5 items-center">
-                                                                                    <FormControlLabel value="0" onChange={() => setDeliveryFee(0)} control={<Radio />} />
+                                                                                    <FormControlLabel value="1" onChange={() => setDeliveryFee(1)} control={<Radio />} />
                                                                                 </div>
                                                                                 <div className="ms-4 text-sm">
                                                                                     <span className="font-medium leading-none text-gray-900 "> Credit Card </span>
                                                                                     <p id="credit-card-text" className="mt-1 text-xs font-normal text-gray-500 ">Pay with your credit card</p>
-                                                                                </div>
-
+                                                                            </div>
                                                                             </div>
                                                                         </div>
 
@@ -272,7 +270,7 @@ export const Cart = () => {
                                                                             <div className="flex items-start">
 
                                                                                 <div className="flex h-5 items-center">
-                                                                                    <FormControlLabel value="1" onChange={() => setDeliveryFee(1)} control={<Radio />} />
+                                                                                    <FormControlLabel value="0" onChange={() => setDeliveryFee(0)} control={<Radio />} />
                                                                                 </div>
                                                                                 <div className="ms-4 text-sm">
                                                                                     <span className="font-medium leading-none text-gray-900 "> Payment on delivery </span>

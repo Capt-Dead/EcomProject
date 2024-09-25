@@ -121,7 +121,9 @@ export const AdminProdvider = ({ children }) => {
             Authorization: `Bearer ${cookies.user.token}`,
           },
         });
-        getData();
+        if (update) {
+          getData();
+        }
       }
     } catch (e) {
       if (e.all.status === 422) {

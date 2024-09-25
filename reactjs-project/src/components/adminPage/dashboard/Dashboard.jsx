@@ -55,7 +55,7 @@ export const Dashboard = () => {
                             <Link to="/admin/user">
                                 <div className="flex flex-col items-center border border-gray-200 rounded-lg shadow md:flex-row hover:bg-gray-100 ">
                                     <div className="flex flex-col justify-between p-4 leading-normal">
-                                        <p className="mb-2 text-xl font-bold tracking-tight text-gray-900">User</p>
+                                        <p className="mb-2 text-xl font-bold tracking-tight text-gray-900">User(s)</p>
                                         <p className="mb-2 text-lg font-bold tracking-tight text-gray-900">{data.countNotAdmin}</p>
                                         <p className="mb-2 text-sm font-bold tracking-tight text-gray-400">Total  Users (Admin: {data.countAdmin})</p>
                                     </div >

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $response = User::all();
         return response()->json($response, 200);
@@ -26,7 +26,6 @@ class UserController extends Controller
             $user    = User::find($id);
             $address = $user->address;
 
-            // $cart    = CartItems::where('user_id', $id)->where('payment', 0)->count();
             if (!$user) {
                 return response()->json([
                     'message' => 'Not Found'
@@ -43,7 +42,6 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, $id)
     {
-        //
         try {
             DB::beginTransaction();
             $user = User::find($id);

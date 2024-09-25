@@ -28,7 +28,6 @@ export const ProductProvider = ({ children }) => {
   const [size4, setSize4] = useState(0);
   const [size5, setSize5] = useState(0);
   const [size6, setSize6] = useState(0);
-  const [productEdit, setProductEdit] = useState([]);
   const [errors, setErrors] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [products, setProducts] = useState([]);
@@ -103,7 +102,7 @@ export const ProductProvider = ({ children }) => {
   };
 
   const newReview = async (data) => {
-  try {
+    try {
       const formData = new FormData();
       formData.append("user_id", cookies.user.user);
       formData.append("products_id", reviewProduct);
@@ -184,34 +183,30 @@ export const ProductProvider = ({ children }) => {
       formData.append("size4", size4);
       formData.append("size5", size5);
       formData.append("size6", size6);
-      const response = await axios.post("product", formData, {
+      await axios.post("product", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${cookies.user.token}`,
         },
       });
-      if (response) {
-        navigate("/profile/start-sell/view-product");
-        setFormValues(initialForm);
-        setSize1("");
-        setSize2("");
-        setSize3("");
-        setSize4("");
-        setSize6("");
-        setFile("");
-        toast.success("Success, product is added!", {
-          position: "bottom-left",
-        });
-      }
+      navigate("/profile/start-sell/view-product");
+      setFormValues(initialForm);
+      setSize1("");
+      setSize2("");
+      setSize3("");
+      setSize4("");
+      setSize6("");
+      setFile("");
+      toast.success("Success, product is added!", {
+        position: "bottom-left",
+      });
     } catch (e) {
       if (e.response.status === 422) {
-        console.log(e.response.data.errors);
         setErrors(e.response.data.errors);
         toast.error("Something Went Wrong", {
           position: "bottom-left",
         });
       }
-      console.log(e.response);
     }
   };
 
@@ -332,7 +327,6 @@ export const ProductProvider = ({ children }) => {
         getEditProducts,
         getCart,
         cartCount,
-        productEdit,
         addProducts,
         updateProducts,
         onChange,

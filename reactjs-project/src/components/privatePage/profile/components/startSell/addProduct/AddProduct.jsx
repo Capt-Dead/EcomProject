@@ -38,7 +38,7 @@ export const AddProduct = () => {
             <form onSubmit={handleSubmit(addProducts)}>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 mt-4">
                     <div>
-                        <label className="text-black" htmlFor="product_name">Product Name:</label>
+                        <p className="text-black" htmlFor="product_name">Product Name:</p>
                         <Controller
                             name={'name'}
                             control={control}
@@ -66,6 +66,8 @@ export const AddProduct = () => {
                                 <TextField
                                     {...field}
                                     fullWidth
+                                    multiline
+                                    maxRows={4}
                                     value={field.value}
                                     error={!!error}
                                     helperText={error?.message}
@@ -130,7 +132,7 @@ export const AddProduct = () => {
 
 
                     <div>
-                        <label className="text-black" htmlFor="product_price">Price:</label>
+                        <p className="text-black" htmlFor="product_price">Price:</p>
                         <Controller
                             name={'price'}
                             control={control}
@@ -150,7 +152,7 @@ export const AddProduct = () => {
                     </div>
 
                     <div>
-                        <label className="text-black" htmlFor="product_stock">Stock:</label>
+                        <p className="text-black" htmlFor="product_stock">Stock:</p>
                         <Controller
                             name={'stock'}
                             control={control}
@@ -171,7 +173,7 @@ export const AddProduct = () => {
 
                     <div>
 
-                        <label className="block text-black" htmlFor="image">Upload file</label>
+                        <p className="block text-black" htmlFor="image">Upload file</p>
                         <input name="image" id="image" onChange={(e) => setFile(e.target.files[0])} className="block w-full text-sm text-white border border-black rounded-lg cursor-pointer bg-black focus:outline-none" aria-describedby="file_input_help" type="file" />
                         <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" >SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                         {errors.image && (
