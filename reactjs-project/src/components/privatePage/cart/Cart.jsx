@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Header, Footer } from '../../index'
+import { Header } from '../../index'
 import { useState, useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -13,7 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { TextField, FormControlLabel, RadioGroup, Radio, FormHelperText } from "@mui/material";
 
 export const Cart = () => {
-    const { cart, getCart, payment, deleteCart, setErrors } = useContext(CartContext);
+    const { cart, getAllCart, payment, deleteCart, setErrors } = useContext(CartContext);
     const { formValues } = useContext(AccountContext);
     const [open, setOpen] = useState(false);
     const [deliveryFee, setDeliveryFee] = useState(0);
@@ -30,11 +30,11 @@ export const Cart = () => {
     })
 
     const defaultValues = {
-        address: '',
-        city: '',
-        postalcode: '',
-        country: '',
-        mobile: '',
+        address: formValues.address,
+        city: formValues.city,
+        postalcode: formValues.postal,
+        country: formValues.country,
+        mobile: formValues.mobile,
         options: '',
     }
 
@@ -51,7 +51,7 @@ export const Cart = () => {
     };
 
     useEffect(() => {
-        getCart()
+        getAllCart()
         setErrors({});
     }, [])
 
@@ -262,7 +262,7 @@ export const Cart = () => {
                                                                                 <div className="ms-4 text-sm">
                                                                                     <span className="font-medium leading-none text-gray-900 "> Credit Card </span>
                                                                                     <p id="credit-card-text" className="mt-1 text-xs font-normal text-gray-500 ">Pay with your credit card</p>
-                                                                            </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
 
@@ -336,7 +336,6 @@ export const Cart = () => {
                     </div>
                 </div>
             </section >
-            <Footer />
         </>
     )
 }

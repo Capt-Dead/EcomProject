@@ -1,21 +1,23 @@
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProductContxt from "./ProductContext";
 
 axios.defaults.baseURL = "http://laravel-project.test:8080/api/";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const { getCart } = useContext(ProductContxt);
   const [cart, setCart] = useState([]);
   const [errors, setErrors] = useState([]);
   const [cookies] = useCookies(["user"]);
   const navigate = useNavigate();
 
-  const getCart = async () => {
+  const getAllCart = async () => {
     try {
       const response = await axios.get("cart/" + cookies.user.user, {
         headers: {
@@ -91,6 +93,8 @@ export const CartProvider = ({ children }) => {
     toast.warn("Product is remove from the cart", {
       position: "bottom-left",
     });
+    getCart();
+    getAllCart();
   };
 
   const cancelOrder = async (id) => {
@@ -115,13 +119,36 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const completeOrder = async (id) => {
+    try {
+      const formData = new FormData();
+      formData.append("_method", "PUT");
+      const complete = await axios.post("order/" + id + "/complete", formData, {
+        headers: {
+          Authorization: `Bearer ${cookies.user.token}`,
+        },
+      });
+      if (complete) {
+        toast.success("You revieced the item! Thank you and shop again ", {
+          position: "bottom-left",
+        });
+        getCartPaid();
+      }
+    } catch (e) {
+      if (e.all.status === 500) {
+        return e?.response?.data?.message;
+      }
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
         cart,
-        getCart,
+        getAllCart,
         getCartPaid,
         cancelOrder,
+        completeOrder,
         payment,
         deleteCart,
         errors,

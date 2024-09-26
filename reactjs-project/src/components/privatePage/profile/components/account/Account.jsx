@@ -7,7 +7,7 @@ import AccountContext from "../../../../../context/api/AccountContext";
 import { TextField } from "@mui/material";
 
 export const Account = () => {
-    const { formValues, onChange, accountEdit, getUser, updateUser, errors, setErrors } = useContext(AccountContext);
+    const { formValues, onChange, getUser, updateUser, errors, setErrors } = useContext(AccountContext);
     let { id } = useParams();
 
     const ProductSchema = yup.object({
@@ -19,11 +19,11 @@ export const Account = () => {
     })
 
     const defaultValues = {
-        address: '',
-        city: '',
-        postalcode: '',
-        country: '',
-        mobile: '',
+        address: formValues.address,
+        city: formValues.city,
+        postalcode: formValues.postal,
+        country: formValues.country,
+        mobile: formValues.mobile,
     }
 
     const { control, handleSubmit, formState: { error },

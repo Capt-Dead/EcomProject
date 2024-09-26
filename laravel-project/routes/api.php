@@ -50,6 +50,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('admin', [AdminController::class, 'countUser']);
 
     Route::put('/order/{id}/cancel', [CartController::class, 'cancel']);
+    Route::put('/order/{id}/complete', [CartController::class, 'complete']);
     Route::put('/product/{id}', [ProductController::class, 'update']);
     Route::put('update-status/{id}', [AdminController::class, 'updateStatus']);
 

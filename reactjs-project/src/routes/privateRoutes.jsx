@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { PaymentInvoice, Cart, DefaultPage, Product, Profile, Wishlist, Account, Purchase, Completed, Cancelled, ToPay, StartSelling, AddProduct, EditProduct, ViewProduct, Sale, AdminIndex, Dashboard, Users, Products, HighTops, MidTops, LowTops, AboutUs, Error } from "../components";
+import { PaymentInvoice, Cart, DefaultPage, Product, Profile, Wishlist, Account, Purchase, Completed, Cancelled, ToPay, StartSelling, AddProduct, EditProduct, ViewProduct, Sale, AdminIndex, Dashboard, Users, Products, HighTops, MidTops, LowTops, AboutUs, Error, Shipped } from "../components";
 
 const
     PrivateRoutes = () => {
@@ -81,6 +81,7 @@ const
                 <Route path="profile" element={<Profile />}>
                     <Route path="purchase" element={<Purchase />}>
                         <Route path="complete-purchases" element={<Completed />} />
+                        <Route path="shipped-orders" element={<Shipped />} />
                         <Route path="cancelled-orders" element={<Cancelled />} />
                         <Route path="checkout-items" element={<ToPay />} />
                     </Route>

@@ -7,8 +7,7 @@ import logo from '../../../Jumpman_logo.png'
 
 export const Profile = () => {
     const [cookies] = useCookies(["user"]);
-    const { formValues, accountEdit, getUser, setErrors } = useContext(AccountContext);
-    // let { id } = useParams();
+    const { formValues, getUser, setErrors } = useContext(AccountContext);
     useEffect(() => {
         getUser();
         setErrors({});
@@ -40,7 +39,7 @@ export const Profile = () => {
 
                                                         <Link to='/admin'>
                                                             <li className="hover:border-black hover:border-b p-2 mb-2 hover:cursor-pointer">
-                                                                Go to Admin Dashboard
+                                                                Go to My Dashboard
                                                             </li>
                                                         </Link>
                                                     </>

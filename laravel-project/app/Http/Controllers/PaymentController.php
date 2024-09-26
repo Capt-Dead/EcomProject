@@ -6,7 +6,6 @@ use App\Models\CartItems;
 use App\Models\OrderDetails;
 use App\Models\Products;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stripe\Stripe;
@@ -35,25 +34,6 @@ class PaymentController extends Controller
                         'data' => "Out of stock"
                     ], 422);
                 }
-
-                $newQuantity   = $productUpdate->stock_inventory - $quantity;
-
-                $productUpdate->update([
-                    'stock_inventory' => $newQuantity,
-                ]);
-                $cartUpdate->update([
-                    'payment' => $paid,
-                ]);
-
-                $total  = $product->price * $cartUpdate->quantity;
-                $status = 2;
-                $order  = new OrderDetails;
-                $order->cart_items_id   = $item->id;
-                $order->payment_details = $request->input('options');
-                $order->total           = $total;
-                $order->status          = $status;
-                $order->save();
-
                 $cartArray[] = [
                     'price_data' => [
                         'currency'     => 'usd',
@@ -66,16 +46,6 @@ class PaymentController extends Controller
                     'quantity' => $quantity
                 ];
             };
-            DB::beginTransaction();
-            $user = User::find($id);
-            $user->address->update([
-                'address'     => $request->input('address'),
-                'city'        => $request->input('city'),
-                'postal_code' => $request->input('postalcode'),
-                'country'     => $request->input('country'),
-                'mobile_no'   => $request->input('mobile'),
-            ]);
-            DB::commit();
         };
 
         Stripe::setApiKey(config('stripe.secret_key'));
@@ -87,7 +57,33 @@ class PaymentController extends Controller
             'cancel_url'           => 'http://localhost:3000/shop-cart',
         ]);
 
+        DB::beginTransaction();
+        $user = User::find($id);
+        $user->address->update([
+            'address'     => $request->input('address'),
+            'city'        => $request->input('city'),
+            'postal_code' => $request->input('postalcode'),
+            'country'     => $request->input('country'),
+            'mobile_no'   => $request->input('mobile'),
+        ]);
+        $newQuantity   = $productUpdate->stock_inventory - $quantity;
 
+        $productUpdate->update([
+            'stock_inventory' => $newQuantity,
+        ]);
+        $cartUpdate->update([
+            'payment' => $paid,
+        ]);
+
+        $total  = $product->price * $cartUpdate->quantity;
+        $status = 2;
+        $order  = new OrderDetails;
+        $order->cart_items_id   = $item->id;
+        $order->payment_details = $request->input('options');
+        $order->total           = $total;
+        $order->status          = $status;
+        $order->save();
+        DB::commit();
 
         return response()->json([
             'url' => $session->url

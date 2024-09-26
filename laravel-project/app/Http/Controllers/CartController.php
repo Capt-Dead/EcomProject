@@ -74,6 +74,16 @@ class CartController extends Controller
         return response()->json('Your order is cancelled', 202);
     }
 
+    public function complete($id)
+    {
+        $update = 1;
+        $order = OrderDetails::find($id);
+        $order->status = $update;
+        $order->save();
+
+        return response()->json('Your order is updated', 202);
+    }
+
     public function destroy($id)
     {
         $cart = CartItems::find($id);

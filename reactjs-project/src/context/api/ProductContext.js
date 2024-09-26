@@ -352,6 +352,7 @@ export const ProductProvider = ({ children }) => {
         review,
         newReview,
         setReviewProduct,
+        setCartCount,
       }}
     >
       {children}

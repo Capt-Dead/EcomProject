@@ -152,9 +152,9 @@ export const Sale = () => {
                                                 >
                                                     {/* onClick={() => updateStatus()} */}
                                                     <option value={0}>On Delivery</option>
-                                                    <option value={1}>Done</option>
+                                                    <option className="invisible" value={1}>Done</option>
                                                     <option value={2}>Pending</option>
-                                                    <option value={3}>Cancel</option>
+                                                    <option className="invisible" value={3}>Cancel</option>
                                                 </NativeSelect>
                                             </FormControl>
                                         </td>
